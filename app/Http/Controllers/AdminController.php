@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use PHPUnit\Logging\OpenTestReporting\Status;
 
 class AdminController extends Controller
 {
@@ -13,8 +14,18 @@ class AdminController extends Controller
     public function index()
     {
         $orders = Order::all();
-        
         return view('admin.index', compact('orders'));
+    }
+    
+    public function update(Request $request, Order $order)
+    {
+        $request->validate([
+            'status' => 'required|in:Новая,В процессе,Завершена,Отменена'
+        ]);
+        $order->update([
+            'status' => $request->status
+        ]);
+        return redirect()->back();
     }
 
     /**
@@ -45,14 +56,6 @@ class AdminController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
     {
         //
     }

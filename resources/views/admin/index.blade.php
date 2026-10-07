@@ -11,14 +11,28 @@
                 <div class="p-6 text-gray-900">
                    @foreach($orders as $order)
                     <div class="border border-solid border-black">
+                    {{$order -> user -> name}}<br>
+                    {{$order -> user -> lastname}}<br>
+                    {{$order -> user -> middlename}}<br>
+                    {{$order -> user -> tel}}<br>
+                    {{$order -> user -> email}}<br>
                     {{$order -> address}}<br>
                     {{$order -> repair_type}}<br>
-                    {{$order -> date_time}}<br>
                     {{$order -> pay_type}}<br>
-                    {{$order -> status}}<br>
+                    {{$order -> date_time}}<br>
+
+                    <form action="{{ route('admin.orders.update', $order->id) }}" method="POST">
+                        @csrf
+                        @method('PATCH')
+                        <select name="status" onchange="this.form.submit()">
+                            <option value="Новая" {{ $order->status == 'Новая' ? 'selected' : '' }}>Новая</option>
+                            <option value="В процессе" {{ $order->status == 'В процессе' ? 'selected' : '' }}>В процессе</option>
+                            <option value="Завершена" {{ $order->status == 'Завершена' ? 'selected' : '' }}>Завершена</option>
+                            <option value="Отменена" {{ $order->status == 'Отменена' ? 'selected' : '' }}>Отменена</option>
+                        </select>
+                    </form>
                     </div>
                     @endforeach
-                </div>
                 </div>
             </div>
         </div>
